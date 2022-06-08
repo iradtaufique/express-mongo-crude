@@ -1,8 +1,13 @@
-<h2>All Articles</h2>
-<div class="container">
-<ul class="list-group">
-{{#each articles}}
-    <li class="list-group-item"> ID: {{this.id}} <br> Name: {{this.name}} <br> Title: {{this.title}} </li>
-{{/each}}
-</ul>
+<div class="container mt-5">
+    <form action="/add/article" method="post">
+        <label for="title">Title</label>
+        <input type="text" name="title">
+        <label for="author">Author</label>
+        <input type="text" name="author">
+
+        <label for="body">Body</label>
+        <input type="text" name="body">
+
+        <button>Submit</button>
+    </form>
 </div>

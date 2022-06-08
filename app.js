@@ -1,9 +1,10 @@
 const express = require("express");
 const exhbs = require("express-handlebars");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 
 // connecting to dbs
-mongoose.connect('mongodb://localhost/article_db');
+mongoose.connect("mongodb://localhost/article_db");
 
 let db = mongoose.connection;
 
@@ -19,6 +20,13 @@ db.on("error", function (err) {
 
 // initializing the app
 const app = express();
+
+//body parser middleware
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
+app.use(bodyParser.json());
 
 // importing article model
 let Article = require("./models/article");
@@ -41,26 +49,30 @@ app.get("/", (req, res) => {
   }).lean();
 });
 
-// routes for adding articles
-app.get("/add", (req, res) => {
-  let articles = [
-    {
-      id: 1,
-      name: "aritcle 1",
-      title: "title 1",
-    },
-    {
-      id: 2,
-      name: "aritcle 2",
-      title: "title 2",
-    },
-    {
-      id: 3,
-      name: "aritcle 3",
-      title: "title 3",
-    },
-  ];
-  res.render("add_article", { articles: articles });
+// routes for getting articles
+app.get("/add/article", (req, res) => {
+  res.render("add_article", { title: "Add Article" });
+});
+
+//  route for adding post
+app.post("/add/article", function (req, res) {
+  // creating new object which point to Article model
+  let article = new Article();
+  article.title = req.body.title;
+  article.author = req.body.author;
+  article.body = req.body.body;
+
+  article.save(function (err) {
+    if (err) {
+      console.log(err);
+      return;
+    } else {
+      res.redirect("/");
+    }
+  });
+
+  console.log(req.body.title);
+  return;
 });
 
 app.listen(3000, () => {
