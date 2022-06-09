@@ -2,6 +2,7 @@ const express = require("express");
 const exhbs = require("express-handlebars");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const path = require("path");
 
 // connecting to dbs
 mongoose.connect("mongodb://localhost/article_db");
@@ -30,6 +31,10 @@ app.use(bodyParser.json());
 
 // importing article model
 let Article = require("./models/article");
+const article = require("./models/article");
+
+//  setting static folder
+app.use(express.static(path.join(__dirname, "public")));
 
 // setting template engine
 app.engine("handlebars", exhbs.engine());
@@ -73,6 +78,15 @@ app.post("/add/article", function (req, res) {
 
   console.log(req.body.title);
   return;
+});
+
+// get single article
+app.get("/article/:id", function (req, res) {
+  Article.findById(req.params.id, (err, article) => {
+    res.render("article_details", {
+      article: article,
+    });
+  }).lean();
 });
 
 app.listen(3000, () => {

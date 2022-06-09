@@ -1,7 +1,13 @@
 <h1>{{title}}</h1>
 
+<ul class="list-group"></ul>
 {{#each articles}}
 
-  {{this.title}} <br>
+  
+    <li class="list-group-item">
+      <a href="/article/{{this._id}}">{{this.title}}</a>
+    </li>
+  
 
 {{/each}}
+</ul>
