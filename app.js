@@ -105,7 +105,7 @@ app.post("/edit/article/:id", (req, res) => {
   article.body = req.body.body;
 
   // query to match article
-  let query = {_id:req.params.id };
+  let query = { _id: req.params.id };
   Article.update(query, article, (err) => {
     if (err) {
       console.log(err);
@@ -113,6 +113,20 @@ app.post("/edit/article/:id", (req, res) => {
       res.redirect("/");
     }
   });
+});
+
+// route for deleting article
+app.delete("/delete/article/:id", (req, res) => {
+  let query = { _id: req.params.id };
+  // removing article
+  Article.remove(query, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send("Deleted Successfully");
+    }
+  });
+
 });
 
 app.listen(3000, () => {
