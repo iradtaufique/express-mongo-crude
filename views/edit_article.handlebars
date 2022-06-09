@@ -1,0 +1,9 @@
+<h1>Edit Article</h1>
+
+ <form action="/edit/article/{{article._id}}" method="post" class="form-group">
+        <input type="text" name="title" class="form-control form-control-lg" placeholder="Title" value="{{article.title}}">
+        <input type="text" name="author" class="form-control form-control-lg" placeholder="Body" value="{{article.author}}">
+        <textarea name="body" id="" cols="30" rows="10">{{article.body}}</textarea>
+
+        <button>Submit</button>
+    </form>

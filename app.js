@@ -89,6 +89,32 @@ app.get("/article/:id", function (req, res) {
   }).lean();
 });
 
+// Edit article route
+app.get("/edit/article/:id", (req, res) => {
+  Article.findById(req.params.id, (err, article) => {
+    res.render("edit_article", {
+      article: article,
+    });
+  }).lean();
+});
+
+app.post("/edit/article/:id", (req, res) => {
+  let article = {};
+  article.title = req.body.title;
+  article.author = req.body.author;
+  article.body = req.body.body;
+
+  // query to match article
+  let query = {_id:req.params.id };
+  Article.update(query, article, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect("/");
+    }
+  });
+});
+
 app.listen(3000, () => {
   console.log("Server is running on port 3000 ...");
 });
